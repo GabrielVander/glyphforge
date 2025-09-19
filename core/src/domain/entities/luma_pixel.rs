@@ -5,7 +5,7 @@ struct LumaPixel {
 }
 
 impl AsciiRenderable for LumaPixel {
-    fn to_ascii(&self, renderer: &impl AsciiRenderer) -> String {
+    fn to_ascii(&self, renderer: Box<dyn AsciiRenderer>) -> String {
         renderer.render_luma(self.y).to_string()
     }
 }
@@ -17,12 +17,12 @@ mod tests {
     #[test]
     fn to_ascii_uses_y_value() {
         let random_y_value: u8 = 81;
-        let renderer: MockAsciiRenderer = MockAsciiRenderer {
+        let renderer: Box<MockAsciiRenderer> = Box::new(MockAsciiRenderer {
             expected_luma_y_value: random_y_value,
-        };
+        });
         let pixel: LumaPixel = LumaPixel { y: random_y_value };
 
-        assert_eq!(pixel.to_ascii(&renderer), "X");
+        assert_eq!(pixel.to_ascii(renderer), "X");
     }
 
     struct MockAsciiRenderer {
