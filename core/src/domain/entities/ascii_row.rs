@@ -1,16 +1,17 @@
 use crate::domain::entities::{ascii_renderable::AsciiRenderable, ascii_renderer::AsciiRenderer};
 
-struct AsciiRow<'a> {
+pub(crate) struct AsciiRow<'a> {
     children: Vec<&'a dyn AsciiRenderable>,
 }
+
 impl<'a> AsciiRow<'a> {
-    fn empty() -> Self {
+    pub fn empty() -> Self {
         AsciiRow {
             children: Vec::new(),
         }
     }
 
-    fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
+    pub fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
         Self { children }
     }
 }

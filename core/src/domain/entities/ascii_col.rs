@@ -1,8 +1,9 @@
 use crate::domain::entities::ascii_renderable::AsciiRenderable;
 
-struct AsciiCol<'a> {
+pub(crate) struct AsciiCol<'a> {
     children: Vec<&'a dyn AsciiRenderable>,
 }
+
 impl<'a> AsciiCol<'a> {
     fn empty() -> Self {
         AsciiCol {
@@ -10,7 +11,7 @@ impl<'a> AsciiCol<'a> {
         }
     }
 
-    fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
+    pub fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
         Self { children }
     }
 }

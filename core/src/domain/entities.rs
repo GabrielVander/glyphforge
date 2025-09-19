@@ -1,3 +1,4 @@
+mod ascii_art;
 mod ascii_col;
 mod ascii_renderable;
 mod ascii_renderer;
