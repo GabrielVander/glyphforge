@@ -1,18 +1,18 @@
 use crate::domain::entities::ascii_renderer::AsciiRenderer;
 
-struct AsciiRendererInHouseImpl {
+pub(crate) struct AsciiRendererStandardImpl {
     charset: [char; 10],
 }
 
-impl AsciiRendererInHouseImpl {
-    fn new() -> Self {
+impl AsciiRendererStandardImpl {
+    pub fn new() -> Self {
         Self {
             charset: [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@'],
         }
     }
 }
 
-impl AsciiRenderer for AsciiRendererInHouseImpl {
+impl AsciiRenderer for AsciiRendererStandardImpl {
     fn render_luma(&self, y: u8) -> char {
         let index: usize = (y as usize * self.charset.len()) / 256;
 
@@ -28,7 +28,7 @@ mod tests {
 
     #[test]
     fn render_black_luma_value() {
-        let renderer: AsciiRendererInHouseImpl = AsciiRendererInHouseImpl::new();
+        let renderer: AsciiRendererStandardImpl = AsciiRendererStandardImpl::new();
 
         let result: char = renderer.render_luma(0);
 
@@ -37,7 +37,7 @@ mod tests {
 
     #[test]
     fn render_white_luma_value() {
-        let renderer: AsciiRendererInHouseImpl = AsciiRendererInHouseImpl::new();
+        let renderer: AsciiRendererStandardImpl = AsciiRendererStandardImpl::new();
 
         let result: char = renderer.render_luma(255);
 
@@ -46,7 +46,7 @@ mod tests {
 
     #[test]
     fn render_mid_gray_luma_value() {
-        let renderer: AsciiRendererInHouseImpl = AsciiRendererInHouseImpl::new();
+        let renderer: AsciiRendererStandardImpl = AsciiRendererStandardImpl::new();
 
         let result: char = renderer.render_luma(128);
 
