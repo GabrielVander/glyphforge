@@ -1,22 +1,22 @@
 use crate::domain::entities::{ascii_renderable::AsciiRenderable, ascii_renderer::AsciiRenderer};
 
-pub(crate) struct AsciiRow<'a> {
-    children: Vec<&'a dyn AsciiRenderable>,
+pub(crate) struct AsciiRow {
+    children: Vec<Box<dyn AsciiRenderable>>,
 }
 
-impl<'a> AsciiRow<'a> {
+impl AsciiRow {
     pub fn empty() -> Self {
         AsciiRow {
             children: Vec::new(),
         }
     }
 
-    pub fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
+    pub fn new(children: Vec<Box<dyn AsciiRenderable>>) -> Self {
         Self { children }
     }
 }
 
-impl<'a> AsciiRenderable for AsciiRow<'a> {
+impl AsciiRenderable for AsciiRow {
     fn to_ascii(&self, renderer: &dyn AsciiRenderer) -> String {
         self.children
             .iter()
@@ -43,10 +43,9 @@ mod test {
     #[test]
     fn to_ascii_one_child() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let child: AsciiRenderableMock = AsciiRenderableMock {
+        let row: AsciiRow = AsciiRow::new(vec![Box::new(AsciiRenderableMock {
             ascii_representation: "mock".to_string(),
-        };
-        let row: AsciiRow = AsciiRow::new(vec![&child]);
+        })]);
 
         assert_eq!(row.to_ascii(&renderer), "mock");
     }
@@ -54,16 +53,17 @@ mod test {
     #[test]
     fn to_ascii_multiple_children() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let child1: AsciiRenderableMock = AsciiRenderableMock {
-            ascii_representation: "A".to_string(),
-        };
-        let child2: AsciiRenderableMock = AsciiRenderableMock {
-            ascii_representation: "B".to_string(),
-        };
-        let child3: AsciiRenderableMock = AsciiRenderableMock {
-            ascii_representation: "C".to_string(),
-        };
-        let row: AsciiRow = AsciiRow::new(vec![&child1, &child2, &child3]);
+        let row: AsciiRow = AsciiRow::new(vec![
+            Box::new(AsciiRenderableMock {
+                ascii_representation: "A".to_string(),
+            }),
+            Box::new(AsciiRenderableMock {
+                ascii_representation: "B".to_string(),
+            }),
+            Box::new(AsciiRenderableMock {
+                ascii_representation: "C".to_string(),
+            }),
+        ]);
 
         assert_eq!(row.to_ascii(&renderer), "ABC");
     }

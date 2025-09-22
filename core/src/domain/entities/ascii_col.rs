@@ -1,22 +1,22 @@
 use crate::domain::entities::ascii_renderable::AsciiRenderable;
 
-pub(crate) struct AsciiCol<'a> {
-    children: Vec<&'a dyn AsciiRenderable>,
+pub(crate) struct AsciiCol {
+    children: Vec<Box<dyn AsciiRenderable>>,
 }
 
-impl<'a> AsciiCol<'a> {
+impl AsciiCol {
     fn empty() -> Self {
         AsciiCol {
             children: Vec::new(),
         }
     }
 
-    pub fn new(children: Vec<&'a dyn AsciiRenderable>) -> Self {
+    pub fn new(children: Vec<Box<dyn AsciiRenderable>>) -> Self {
         Self { children }
     }
 }
 
-impl<'a> AsciiRenderable for AsciiCol<'a> {
+impl AsciiRenderable for AsciiCol {
     fn to_ascii(&self, renderer: &dyn super::ascii_renderer::AsciiRenderer) -> String {
         self.children
             .iter()
@@ -47,10 +47,9 @@ mod test {
     #[test]
     fn to_ascii_single_child() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let child: AsciiRenderableConstant = AsciiRenderableConstant {
-            ascii_representation: "A".to_string(),
-        };
-        let col: AsciiCol = AsciiCol::new(vec![&child]);
+        let col: AsciiCol = AsciiCol::new(vec![Box::new(FakeAsciiRenderable {
+            ascii_representation_to_be_returned: "A".to_string(),
+        })]);
 
         assert_eq!(col.to_ascii(&renderer), "A");
     }
@@ -58,16 +57,17 @@ mod test {
     #[test]
     fn to_ascii_multiple_children() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let child1: AsciiRenderableConstant = AsciiRenderableConstant {
-            ascii_representation: "A".to_string(),
-        };
-        let child2: AsciiRenderableConstant = AsciiRenderableConstant {
-            ascii_representation: "B".to_string(),
-        };
-        let child3: AsciiRenderableConstant = AsciiRenderableConstant {
-            ascii_representation: "C".to_string(),
-        };
-        let col: AsciiCol = AsciiCol::new(vec![&child1, &child2, &child3]);
+        let col: AsciiCol = AsciiCol::new(vec![
+            Box::new(FakeAsciiRenderable {
+                ascii_representation_to_be_returned: "A".to_string(),
+            }),
+            Box::new(FakeAsciiRenderable {
+                ascii_representation_to_be_returned: "B".to_string(),
+            }),
+            Box::new(FakeAsciiRenderable {
+                ascii_representation_to_be_returned: "C".to_string(),
+            }),
+        ]);
 
         assert_eq!(col.to_ascii(&renderer), "A\nB\nC");
     }
@@ -80,13 +80,13 @@ mod test {
         }
     }
 
-    struct AsciiRenderableConstant {
-        ascii_representation: String,
+    struct FakeAsciiRenderable {
+        ascii_representation_to_be_returned: String,
     }
 
-    impl AsciiRenderable for AsciiRenderableConstant {
+    impl AsciiRenderable for FakeAsciiRenderable {
         fn to_ascii(&self, _: &dyn AsciiRenderer) -> String {
-            self.ascii_representation.clone()
+            self.ascii_representation_to_be_returned.clone()
         }
     }
 }
