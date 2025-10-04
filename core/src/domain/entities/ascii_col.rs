@@ -1,11 +1,12 @@
-use crate::domain::entities::ascii_renderable::AsciiRenderable;
+use crate::domain::entities::{ascii_renderable::AsciiRenderable, ascii_renderer::AsciiRenderer};
 
+#[derive(Debug)]
 pub(crate) struct AsciiCol {
     children: Vec<Box<dyn AsciiRenderable>>,
 }
 
 impl AsciiCol {
-    fn empty() -> Self {
+    pub fn empty() -> Self {
         AsciiCol {
             children: Vec::new(),
         }
@@ -17,7 +18,8 @@ impl AsciiCol {
 }
 
 impl AsciiRenderable for AsciiCol {
-    fn to_ascii(&self, renderer: &dyn super::ascii_renderer::AsciiRenderer) -> String {
+    fn to_ascii(&self, renderer: &dyn AsciiRenderer) -> String {
+        println!("AsciiCol to_ascii");
         self.children
             .iter()
             .map(|c| c.to_ascii(renderer))
@@ -27,14 +29,22 @@ impl AsciiRenderable for AsciiCol {
             .trim_end()
             .to_string()
     }
+
+    fn add_child(&mut self, child: Box<dyn AsciiRenderable>) {
+        self.children.push(child);
+    }
+
+    fn get_child_mut(&mut self, index: usize) -> Option<&mut Box<dyn AsciiRenderable>> {
+        self.children.get_mut(index)
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::domain::entities::ascii_renderer::AsciiRenderer;
+    use crate::domain::entities::{
+        ascii_col::AsciiCol, ascii_renderable::AsciiRenderable, ascii_renderer::AsciiRenderer,
+    };
     use pretty_assertions::assert_eq;
-
-    use super::*;
 
     #[test]
     fn to_ascii_no_children() {
@@ -47,9 +57,11 @@ mod test {
     #[test]
     fn to_ascii_single_child() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let col: AsciiCol = AsciiCol::new(vec![Box::new(FakeAsciiRenderable {
+        let mut col: AsciiCol = AsciiCol::empty();
+
+        col.add_child(Box::new(FakeAsciiRenderable {
             ascii_representation_to_be_returned: "A".to_string(),
-        })]);
+        }));
 
         assert_eq!(col.to_ascii(&renderer), "A");
     }
@@ -57,17 +69,23 @@ mod test {
     #[test]
     fn to_ascii_multiple_children() {
         let renderer: AsciiRendererPanicImpl = AsciiRendererPanicImpl {};
-        let col: AsciiCol = AsciiCol::new(vec![
-            Box::new(FakeAsciiRenderable {
+        let mut col: AsciiCol = AsciiCol::empty();
+
+        let glyphs: Vec<FakeAsciiRenderable> = vec![
+            FakeAsciiRenderable {
                 ascii_representation_to_be_returned: "A".to_string(),
-            }),
-            Box::new(FakeAsciiRenderable {
+            },
+            FakeAsciiRenderable {
                 ascii_representation_to_be_returned: "B".to_string(),
-            }),
-            Box::new(FakeAsciiRenderable {
+            },
+            FakeAsciiRenderable {
                 ascii_representation_to_be_returned: "C".to_string(),
-            }),
-        ]);
+            },
+        ];
+
+        for e in glyphs {
+            col.add_child(Box::new(e));
+        }
 
         assert_eq!(col.to_ascii(&renderer), "A\nB\nC");
     }
@@ -80,6 +98,7 @@ mod test {
         }
     }
 
+    #[derive(Clone, Debug)]
     struct FakeAsciiRenderable {
         ascii_representation_to_be_returned: String,
     }
@@ -87,6 +106,14 @@ mod test {
     impl AsciiRenderable for FakeAsciiRenderable {
         fn to_ascii(&self, _: &dyn AsciiRenderer) -> String {
             self.ascii_representation_to_be_returned.clone()
+        }
+
+        fn add_child(&mut self, _child: Box<dyn AsciiRenderable>) {
+            todo!()
+        }
+
+        fn get_child_mut(&mut self, _index: usize) -> Option<&mut Box<dyn AsciiRenderable>> {
+            todo!()
         }
     }
 }
