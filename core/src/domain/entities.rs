@@ -1,7 +1,7 @@
-mod ascii_col;
-mod ascii_none;
-mod ascii_renderable;
-mod ascii_renderer;
-mod ascii_renderer_standard_impl;
-mod ascii_row;
-mod luma_pixel;
+mod glyph;
+mod glyph_col;
+mod glyph_engine_ascii_impl;
+mod glyph_grid;
+mod glyph_none;
+mod glyph_rendering_engine;
+mod glyph_row;
