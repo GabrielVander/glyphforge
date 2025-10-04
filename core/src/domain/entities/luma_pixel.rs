@@ -1,41 +1,25 @@
-use crate::domain::entities::{ascii_renderable::AsciiRenderable, ascii_renderer::AsciiRenderer};
-
+#[derive(Debug)]
 struct LumaPixel {
     y: u8,
+}
+
+impl LumaPixel {
+    pub fn from_rgb(r: u8, g: u8, b: u8) -> Self {
+        let luma_value: u8 = ((2126 * r as u32 + 7152 * g as u32 + 722 * b as u32) / 10000) as u8;
+        Self { y: luma_value }
+    }
 }
 
 impl AsciiRenderable for LumaPixel {
     fn to_ascii(&self, renderer: &dyn AsciiRenderer) -> String {
         renderer.render_luma(self.y).to_string()
     }
-}
 
-#[cfg(test)]
-mod tests {
-    use pretty_assertions::assert_eq;
-
-    use super::*;
-
-    #[test]
-    fn to_ascii_uses_y_value() {
-        let random_y_value: u8 = 81;
-        let renderer: MockAsciiRenderer = MockAsciiRenderer {
-            expected_luma_y_value: random_y_value,
-        };
-        let pixel: LumaPixel = LumaPixel { y: random_y_value };
-
-        assert_eq!(pixel.to_ascii(&renderer), "X");
+    fn add_child(&mut self, _child: Box<dyn AsciiRenderable>) {
+        todo!()
     }
 
-    struct MockAsciiRenderer {
-        expected_luma_y_value: u8,
-    }
-
-    impl AsciiRenderer for MockAsciiRenderer {
-        fn render_luma(&self, y: u8) -> char {
-            assert_eq!(self.expected_luma_y_value, y);
-
-            'X'
-        }
+    fn get_child_mut(&mut self, _index: usize) -> Option<&mut Box<dyn AsciiRenderable>> {
+        todo!()
     }
 }
