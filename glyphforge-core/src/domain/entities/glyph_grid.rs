@@ -4,7 +4,7 @@ use crate::domain::entities::{
 };
 
 #[derive(Debug)]
-struct GlyphGrid {
+pub struct GlyphGrid {
     main_col: GlyphCol,
     elements_count: usize,
     width: usize,
@@ -12,7 +12,7 @@ struct GlyphGrid {
 }
 
 impl GlyphGrid {
-    fn new(width: usize, height: usize) -> Self {
+    pub fn new(width: usize, height: usize) -> Self {
         let mut rows: Vec<Box<dyn Glyph>> = Vec::with_capacity(height);
 
         for _ in 0..width {
