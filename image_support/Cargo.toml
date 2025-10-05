@@ -1,0 +1,10 @@
+[package]
+name = "image_support"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+glyphforge-core = { path = "../glyphforge-core" }
+
+[dev-dependencies]
+pretty_assertions = { workspace = true }
