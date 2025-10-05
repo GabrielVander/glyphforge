@@ -1,6 +1,6 @@
 [workspace]
 resolver = "3"
-members = ["glyphforge-core", "glyphforge-image"]
+members = ["glyphforge-ascii","glyphforge-core", "glyphforge-image"]
 
 [workspace.dependencies]
 pretty_assertions = "1.4.1"
