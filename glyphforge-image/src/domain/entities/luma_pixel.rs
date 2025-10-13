@@ -1,17 +1,19 @@
 use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
 
+use crate::domain::entities::rgb_pixel::RgbPixel;
+
 #[derive(Debug, PartialEq)]
-struct LumaPixel {
+pub(crate) struct LumaPixel {
     y: u8,
 }
 
 impl LumaPixel {
-    fn new(y: u8) -> Self {
+    pub fn new(y: u8) -> Self {
         Self { y }
     }
 
-    pub fn from_rgb(rgb: (u8, u8, u8)) -> Self {
-        let (r, g, b) = rgb;
+    pub fn from_rgb(rgb: RgbPixel) -> Self {
+        let (r, g, b) = (rgb.r, rgb.g, rgb.b);
 
         let luma_value: u8 = ((2126 * r as u32 + 7152 * g as u32 + 722 * b as u32) / 10000) as u8;
         Self { y: luma_value }
@@ -32,23 +34,23 @@ impl Glyph for LumaPixel {
 
 #[cfg(test)]
 mod test {
-    use crate::domain::entities::luma_pixel::LumaPixel;
+    use crate::domain::entities::{luma_pixel::LumaPixel, rgb_pixel::RgbPixel};
 
     use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
     use pretty_assertions::assert_eq;
 
     #[test]
     fn should_parse_rgb_values_to_luma_correctly() {
-        let rgb_values: Vec<(u8, u8, u8)> = vec![
-            (0, 0, 0),       // Black
-            (255, 255, 255), // White
-            (255, 0, 0),     // Red
-            (0, 255, 0),     // Green
-            (0, 0, 255),     // Blue
-            (128, 128, 128), // Gray
-            (255, 255, 0),   // Yellow
-            (0, 255, 255),   // Cyan
-            (255, 0, 255),   // Magenta
+        let rgb_values: Vec<RgbPixel> = vec![
+            RgbPixel::new(0, 0, 0),       // Black
+            RgbPixel::new(255, 255, 255), // White
+            RgbPixel::new(255, 0, 0),     // Red
+            RgbPixel::new(0, 255, 0),     // Green
+            RgbPixel::new(0, 0, 255),     // Blue
+            RgbPixel::new(128, 128, 128), // Gray
+            RgbPixel::new(255, 255, 0),   // Yellow
+            RgbPixel::new(0, 255, 255),   // Cyan
+            RgbPixel::new(255, 0, 255),   // Magenta
         ];
         let expected: Vec<LumaPixel> = vec![0, 255, 54, 182, 18, 128, 236, 200, 72]
             .into_iter()
