@@ -1,0 +1,13 @@
+[package]
+name = "glyphforge-cli"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+glyphforge-core = { path = "../glyphforge-core" }
+glyphforge-image = { path = "../glyphforge-image" }
+glyphforge-ascii = { path = "../glyphforge-ascii" }
+ffmpeg-next = "8.0.0"
+crossterm = "0.29.0"
+scopeguard = "1.2.0"
+termsize = "0.1.9"

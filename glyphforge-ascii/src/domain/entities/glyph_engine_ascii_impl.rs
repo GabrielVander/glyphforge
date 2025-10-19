@@ -1,6 +1,6 @@
 use glyphforge_core::domain::entities::GlyphRenderingEngine;
 
-pub(crate) struct GlyphEngineAsciiImpl {
+pub struct GlyphEngineAsciiImpl {
     charset: [char; 10],
 }
 
