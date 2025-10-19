@@ -6,7 +6,7 @@ use crate::domain::entities::{
 #[derive(Debug)]
 pub struct GlyphGrid {
     main_col: GlyphCol,
-    elements_count: usize,
+    pub elements_count: usize,
     width: usize,
     height: usize,
 }

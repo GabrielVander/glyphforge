@@ -3,8 +3,8 @@ use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
 use crate::domain::entities::rgb_pixel::RgbPixel;
 
 #[derive(Debug, PartialEq)]
-pub(crate) struct LumaPixel {
-    y: u8,
+pub struct LumaPixel {
+    pub y: u8,
 }
 
 impl LumaPixel {
@@ -12,7 +12,7 @@ impl LumaPixel {
         Self { y }
     }
 
-    pub fn from_rgb(rgb: RgbPixel) -> Self {
+    pub(crate) fn from_rgb(rgb: RgbPixel) -> Self {
         let (r, g, b) = (rgb.r, rgb.g, rgb.b);
 
         let luma_value: u8 = ((2126 * r as u32 + 7152 * g as u32 + 722 * b as u32) / 10000) as u8;
