@@ -1,4 +1,4 @@
-use glyphforge_core::domain::entities::{Glyph, GlyphGrid, GlyphRenderingEngine};
+use lib_core::domain::entities::{Glyph, GlyphGrid, GlyphRenderingEngine};
 
 #[derive(Debug)]
 pub struct LumaImage {
@@ -37,7 +37,7 @@ impl Glyph for LumaImage {
 
 #[cfg(test)]
 mod test {
-    use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
+    use lib_core::domain::entities::{Glyph, GlyphRenderingEngine};
     use pretty_assertions::assert_eq;
 
     use crate::domain::entities::{luma_image::LumaImage, luma_pixel::LumaPixel};

@@ -1,4 +1,4 @@
-use glyphforge_core::domain::entities::GlyphRenderingEngine;
+use lib_core::domain::entities::GlyphRenderingEngine;
 
 pub struct GlyphEngineAsciiImpl {
     charset: [char; 10],

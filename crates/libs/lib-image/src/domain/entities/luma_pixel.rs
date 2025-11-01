@@ -1,4 +1,4 @@
-use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
+use lib_core::domain::entities::{Glyph, GlyphRenderingEngine};
 
 use crate::domain::entities::rgb_pixel::RgbPixel;
 
@@ -36,7 +36,7 @@ impl Glyph for LumaPixel {
 mod test {
     use crate::domain::entities::{luma_pixel::LumaPixel, rgb_pixel::RgbPixel};
 
-    use glyphforge_core::domain::entities::{Glyph, GlyphRenderingEngine};
+    use lib_core::domain::entities::{Glyph, GlyphRenderingEngine};
     use pretty_assertions::assert_eq;
 
     #[test]

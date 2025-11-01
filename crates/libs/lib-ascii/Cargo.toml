@@ -1,11 +1,10 @@
 [package]
-name = "glyphforge-image"
+name = "lib-ascii"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-glyphforge-core = { path = "../glyphforge-core" }
-itertools = "0.14.0"
+lib-core = { path = "../lib-core" }
 
 [dev-dependencies]
 pretty_assertions = { workspace = true }

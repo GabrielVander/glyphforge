@@ -1,10 +1,10 @@
 [workspace]
 resolver = "3"
 members = [
-  "crates/libs/glyphforge-core",
-  "crates/libs/glyphforge-ascii",
-  "crates/libs/glyphforge-image",
-  "crates/services/glyphforge-cli",
+  "crates/libs/lib-core",
+  "crates/libs/lib-ascii",
+  "crates/libs/lib-image",
+  "crates/services/cli",
 ]
 
 [workspace.dependencies]

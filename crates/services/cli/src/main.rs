@@ -1,6 +1,6 @@
-use glyphforge_ascii::domain::entities::GlyphEngineAsciiImpl;
-use glyphforge_core::domain::entities::Glyph;
-use glyphforge_image::domain::entities::{LumaImage, LumaPixel};
+use lib_ascii::domain::entities::GlyphEngineAsciiImpl;
+use lib_core::domain::entities::Glyph;
+use lib_image::domain::entities::{LumaImage, LumaPixel};
 use std::{
     env,
     io::{self, Write, stdout},
